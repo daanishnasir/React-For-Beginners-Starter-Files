@@ -14,7 +14,7 @@ constructor(){
 
   this.addFish = this.addFish.bind(this);  //will bind it to the actual app itself;
   this.loadSamples = this.loadSamples.bind(this);  //will bind it to the actual app itself;
-
+  this.addToOrder = this.addToOrder.bind(this);
   //getinitialSloadSampleseact needs to know that we are going to have a fishes state and a order state when it initalizes
   this.state = {
       fishes: {}, //empty object; starts empty
@@ -41,6 +41,14 @@ loadSamples(){  //load the sample fishes
   })
 }
 
+addToOrder(key){
+  //take a copy of our state
+  const order = {...this.state.order};
+  //update or add the new number of fish ordered
+  order[key] = order[key] + 1 || 1;
+  //update our state
+  this.setState({order: order});
+}
 
   render(){
 
@@ -50,7 +58,13 @@ loadSamples(){  //load the sample fishes
             <div className="menu">
               <Header tagline="Fresh Seafood Market"/>
                 <ul className="list-of-fishes">
-                  {Object.keys(this.state.fishes).map(key => <Fish key={key} details={this.state.fishes[key]}/>)}
+                  {
+                    Object
+                    .keys(this.state.fishes)
+                    .map(key => <Fish key={key} index={key}
+                       details={this.state.fishes[key]} addToOrder
+                       ={this.addToOrder}/>)
+                    }
                 </ul>
             </div>
               <Order />
